@@ -1,0 +1,33 @@
+﻿<html><head><title>網頁需要安全連線</title>
+<script type="text/javascript">
+function showMsg() {
+    var cnt = 10;
+    var sslUrl = location.href.replace(/^http/i, "https");
+    document.getElementById("lnkSSL").href = sslUrl;
+    setInterval(function() {
+        if (--cnt >= 0)
+            document.getElementById("spnCountDown").innerHTML = cnt;
+        else
+            location.href = sslUrl;
+    }, 1000);
+}
+</script>
+<style type="text/css">
+div 
+{ 
+    background-color: #cccccc; border: 2px solid black; 
+    padding: 5px; width: 300px; line-height: 150%;
+    font-size: 11pt;
+}
+#spnCountDown { color: red; padding: 4px; }
+</style>
+</head>
+<body onload="showMsg();">
+<div>
+本網站限定使用SSL加密連線!<br />
+請將網址之http://改為https://後重新連線，
+亦可點選<a id="lnkSSL">這裡</a>直接改用加密連線。<br />
+或請稍候<span id="spnCountDown">10</span>秒，
+由系統為您自動轉接。
+</div>
+</body></html>
