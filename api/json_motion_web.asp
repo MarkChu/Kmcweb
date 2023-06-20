@@ -124,6 +124,8 @@ case "getlist"
     sqlstr = sqlstr & " ,sm1_3c   " & vbcrlf 
     sqlstr = sqlstr & " ,sm1_7c  " & vbcrlf 
     sqlstr = sqlstr & " ,sm1_5c  " & vbcrlf 
+    sqlstr = sqlstr & " ,sm1_1c  " & vbcrlf 
+    sqlstr = sqlstr & " ,sm1_2c  " & vbcrlf 
     sqlstr = sqlstr & " FROM prtms_project  " & vbcrlf 
     sqlstr = sqlstr & " WHERE sys_opsts<>'D' and sm1_publish=1 " & vbcrlf 
     if request("expkd")>"" then
@@ -139,6 +141,15 @@ case "getlist"
     if request("searchstr")>"" then
       sqlstr = sqlstr & " and (sm1_3c like ? or sm1_5c like ? or sm1_7c like ?) " & vbcrlf 
     end if
+
+    if request("sm1_1c")>"" then
+      sqlstr = sqlstr & " and sm1_1C like ? " & vbcrlf  
+    end if
+
+    if request("sm1_2c")>"" then
+      sqlstr = sqlstr & " and sm1_2C like ? " & vbcrlf  
+    end if
+
 
     sqlstr = sqlstr & " ORDER BY sm1_expkd desc, sm1_seqkd desc , sm1_seqno desc  " & vbcrlf 
 
@@ -165,9 +176,22 @@ case "getlist"
     searchstr = ""
     if request("searchstr")>"" then
       searchstr = "%"&trim(request("searchstr"))&"%"
-      sql_cmd.Parameters.Append sql_cmd.CreateParameter("search1",202,1,20,searchstr)
-      sql_cmd.Parameters.Append sql_cmd.CreateParameter("search2",202,1,20,searchstr)
-      sql_cmd.Parameters.Append sql_cmd.CreateParameter("search3",202,1,20,searchstr)      
+      sql_cmd.Parameters.Append sql_cmd.CreateParameter("search1",202,1,100,searchstr)
+      sql_cmd.Parameters.Append sql_cmd.CreateParameter("search2",202,1,100,searchstr)
+      sql_cmd.Parameters.Append sql_cmd.CreateParameter("search3",202,1,100,searchstr)      
+    end if
+
+
+    sm1_1C = ""
+    if request("sm1_1c")>"" then
+      sm1_1C = "%"&trim(request("sm1_1c"))&"%"
+      sql_cmd.Parameters.Append sql_cmd.CreateParameter("sm1_1c",202,1,50,sm1_1C)
+    end if
+
+    sm1_2C = ""
+    if request("sm1_2c")>"" then
+      sm1_2C = "%"&trim(request("sm1_2c"))&"%"
+      sql_cmd.Parameters.Append sql_cmd.CreateParameter("sm1_2c",202,1,50,sm1_2C)
     end if
 
     'ADO.CreateParameter(name,type,direction,size,value)
@@ -192,6 +216,8 @@ case "getlist"
         jsa("data")(null)("sm1_3c") = trim(rtn_array(4,rows)&"")
         jsa("data")(null)("sm1_7c") = trim(rtn_array(5,rows)&"")
         jsa("data")(null)("sm1_5c") = trim(rtn_array(6,rows)&"")
+        jsa("data")(null)("sm1_1c") = trim(rtn_array(7,rows)&"")
+        jsa("data")(null)("sm1_2c") = trim(rtn_array(8,rows)&"")
       next
     end if
     jsa.Flush    
